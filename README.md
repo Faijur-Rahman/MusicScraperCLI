@@ -1,17 +1,17 @@
-# 🎵 Tamil Song Downloader
+# 🎵 Multi-Language Song Downloader
 
-Download and Manage Tamil Songs Effortlessly 🎶
+Download and Manage Songs Effortlessly 🎶
 
-This Python script allows you to search for Tamil movie songs on [Masstamilan.dev](https://www.masstamilan.dev/), select your desired audio quality (320kbps or 128kbps), download them, and automatically extract the songs into neatly organized folders. The original ZIP files are then cleaned up to keep your music library tidy.
+This Python script allows you to search for movie songs, select your desired audio quality (320kbps or 128kbps), download them, and automatically extract the songs into neatly organized folders. The original ZIP files are then cleaned up to keep your music library tidy.
 
 ---
 
 ## ✨ Features
 
-- **Search by Movie Name:** Easily find songs for your favorite Tamil movies.
+- **Search by Movie Name:** Easily find songs for your favorite movies.
 - **Quality Selection:** Choose between **320kbps** and **128kbps** audio quality by simply entering `320` or `128`.
 - **Smart Search Matching:** If multiple matches are found, the script presents a list of options, letting you pick the correct movie.
-- **Automated Download Location:** All your downloaded and extracted music is saved to `~/Music/Tamil/` by default.
+- **Automated Download Location:** All your downloaded and extracted music is saved to `~/Music/Language/` .
 - **Organized Downloads:** Each movie's songs are extracted into a dedicated subfolder (e.g., `~/Music/Tamil/Jailer/`).
 - **Automatic Extraction & Cleanup:** Downloads ZIP files, extracts the audio contents, and then deletes the original ZIP to save space.
 
@@ -49,11 +49,9 @@ sudo dnf install python3-virtualenv
 #### 1. Clone the Repository (Recommended)
 
 ```bash
-git clone https://github.com/Faijur-Rahman/masstamilan_scraper.git
-cd masstamilan_scraper
+git clone https://github.com/Faijur-Rahman/MusicScraperCLI.git
+cd MusicScraperCLI
 ```
-
-Or download `masstamilan_scraper.py` directly and place it in your project folder.
 
 #### 2. Create a Virtual Environment
 
@@ -72,7 +70,7 @@ source venv/bin/activate
 #### 4. Install Dependencies
 
 ```bash
-pip install requests beautifulsoup4
+pip install -r requirements.txt
 ```
 
 ---
@@ -88,19 +86,24 @@ Once everything is set up:
 
 2. Run the script:
    ```bash
-   python masstamilan_scraper.py
+   python main.py
    ```
 
 3. Follow the prompts:
-   - Enter the movie name (e.g., `Jailer`)
-   - Enter the desired quality (`320` or `128`)
-   - If multiple matches are shown, select the correct one
-   - Confirm the download by typing `yes` or `no`
+   - Enter language (Tamil/Malayalam): (e.g., `Tamil`)
+   - Enter the movie name to search for: (e.g., `Raja Rani`)
+   - Enter the desired quality (`320` or `128`) (e.g., `320`)
+   - If multiple matches are shown, 
+   - Choose movie number: (select the correct one)
+   - Enter folder name for saving songs (default: Jailer_tamil_songs_download): (e.g., `RajaRani_Songs`)
+   - Download [A]lbum or [S]ingle song? (e.g., `A or S`)
+   - If single song chosen and multiple matches are shown
+   - Enter song numbers to download (e.g. `1,3,5`): 
 
 Your songs will be saved under:
 
 ```
-~/Music/Tamil/Your_Movie_Name/
+~/Music/Language/Your_Movie_Name/
 ```
 
 ---
@@ -149,7 +152,7 @@ venv\Scripts\activate
 Make sure you're in the activated environment:
 
 ```cmd
-pip install requests beautifulsoup4
+pip install -r requirements.txt
 ```
 
 ### 4. Run the Script
@@ -157,14 +160,19 @@ pip install requests beautifulsoup4
 In Command Prompt (or PowerShell):
 
 ```cmd
-python masstamilan_scraper.py
+python main.py
 ```
 
-Follow the on-screen prompts just like in Linux:
-- Enter the movie name (e.g., `Jailer`)
-- Enter `320` or `128` for the desired audio quality
-- Confirm the movie selection
-- Confirm download
+Follow the on-screen prompts:
+   - Enter language (Tamil/Malayalam): (e.g., `Tamil`)
+   - Enter the movie name to search for: (e.g., `Raja Rani`)
+   - Enter the desired quality (`320` or `128`) (e.g., `320`)
+   - If multiple matches are shown, 
+   - Choose movie number: (select the correct one)
+   - Enter folder name for saving songs (default: Jailer_tamil_songs_download): (e.g., `RajaRani_Songs`)
+   - Download [A]lbum or [S]ingle song? (e.g., A or S)
+   - If single song chosen and multiple matches are shown
+   - Enter song numbers to download (e.g. 1,3,5): 
 
 Songs will be saved to:
 
@@ -190,10 +198,9 @@ Change the `custom_download_base_dir` in the script if you want to use a differe
 Here are some planned features and enhancements for future versions:
 
 - [x] **Specific Song Download:** Ability to choose and download individual songs instead of full albums.
-- [ ] **Support for Other Languages:** Extend functionality to download Telugu, Hindi, or Malayalam songs from similar sources.
-- [ ] **Multiple Sources Support:** Allow user to choose from different sites (e.g., Masstamilan.dev, Isaimini, TamilPaadal) if available.
+- [x] **Progress Bar:** Show download progress using a terminal progress bar (e.g., `tqdm`).
+- [x] **Support for Other Languages:** Extend functionality to download Telugu, Hindi, or Malayalam songs from similar sources(Updated: Malayalam).
 - [ ] **GUI Support:** Add a graphical user interface using Tkinter or PyQt for ease of use.
-- [ ] **Progress Bar:** Show download progress using a terminal progress bar (e.g., `tqdm`).
 - [ ] **Error Logging:** Log failed downloads or extraction issues to a file for debugging.
 - [ ] **Cross-Platform Improvements:** Enhance compatibility and download path handling for both Windows and Linux.
 
