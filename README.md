@@ -189,14 +189,13 @@ Change the `custom_download_base_dir` in the script if you want to use a differe
 
 Here are some planned features and enhancements for future versions:
 
-- [ ] **Specific Song Download:** Ability to choose and download individual songs instead of full albums.
+- [x] **Specific Song Download:** Ability to choose and download individual songs instead of full albums.
 - [ ] **Support for Other Languages:** Extend functionality to download Telugu, Hindi, or Malayalam songs from similar sources.
 - [ ] **Multiple Sources Support:** Allow user to choose from different sites (e.g., Masstamilan.dev, Isaimini, TamilPaadal) if available.
 - [ ] **GUI Support:** Add a graphical user interface using Tkinter or PyQt for ease of use.
 - [ ] **Progress Bar:** Show download progress using a terminal progress bar (e.g., `tqdm`).
 - [ ] **Error Logging:** Log failed downloads or extraction issues to a file for debugging.
 - [ ] **Cross-Platform Improvements:** Enhance compatibility and download path handling for both Windows and Linux.
-"""
 
 ---
 
