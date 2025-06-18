@@ -49,8 +49,8 @@ sudo dnf install python3-virtualenv
 #### 1. Clone the Repository (Recommended)
 
 ```bash
-git clone https://github.com/Your-GitHub-Username/Your-Repository-Name.git
-cd Your-Repository-Name
+git clone https://github.com/Faijur-Rahman/masstamilan_scraper.git
+cd masstamilan_scraper
 ```
 
 Or download `masstamilan_scraper.py` directly and place it in your project folder.
