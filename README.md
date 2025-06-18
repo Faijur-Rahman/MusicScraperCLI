@@ -1,3 +1,4 @@
+
 # 🎵 Multi-Language Song Downloader
 
 Download and Manage Songs Effortlessly 🎶
@@ -5,6 +6,8 @@ Download and Manage Songs Effortlessly 🎶
 This Python script allows you to search for movie songs, select your desired audio quality (320kbps or 128kbps), download them, and automatically extract the songs into neatly organized folders. The original ZIP files are then cleaned up to keep your music library tidy.
 
 ---
+[MusicScraperCLI-demo.webm](https://github.com/user-attachments/assets/7e66d333-da7a-4470-8272-8bb82b7d2ae0)
+
 
 ## ✨ Features
 
@@ -124,7 +127,7 @@ Here are some planned features and enhancements for future versions:
 
 - [x] **Specific Song Download:** Ability to choose and download individual songs instead of full albums.
 - [x] **Progress Bar:** Show download progress using a terminal progress bar (e.g., `tqdm`).
-- [x] **Support for Other Languages:** Extend functionality to download Telugu, Hindi, or Malayalam songs from similar sources(Updated: Malayalam).
+- [x] **Support for Other Languages:** Extend functionality to download Telugu, Hindi, or Malayalam songs from similar sources (Updated: Malayalam).
 - [ ] **GUI Support:** Add a graphical user interface using Tkinter or PyQt for ease of use.
 - [ ] **Error Logging:** Log failed downloads or extraction issues to a file for debugging.
 - [ ] **Cross-Platform Improvements:** Enhance compatibility and download path handling for both Windows and Linux.
