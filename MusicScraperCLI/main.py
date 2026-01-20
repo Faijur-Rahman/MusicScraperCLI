@@ -5,8 +5,16 @@ from extract import get_song_list
 from download import download_zip_album, download_single_song
 import os
 import re
+import sys
 
 def main():
+    # Force UTF-8 encoding for Windows terminals to handle symbols like '▶'
+    if sys.platform.startswith('win'):
+        try:
+            sys.stdout.reconfigure(encoding='utf-8')
+        except AttributeError:
+            pass
+
     language_choice, BASE_DOMAIN, download_base_dir = prompt_language_choice()
     SEARCH_URL_PATTERN = f"{BASE_DOMAIN}/search?keyword="
 
@@ -20,8 +28,11 @@ def main():
         print("Could not proceed without a selected movie page.")
         return
 
+    # Sanitize inputs to ensure valid Windows folder names
     default_folder_name = re.sub(r'[^\w\s-]', '', selected_movie_title or movie_to_search).strip().replace(' ', '_') or "Downloaded_Songs"
     folder_name = input(f"Enter folder name for saving songs (default: {default_folder_name}): ").strip() or default_folder_name
+    
+    # Extra sanitization for the final folder path
     clean_folder_name = re.sub(r'[^\w\s-]', '', folder_name).strip().replace(' ', '_')
     output_dir = os.path.join(download_base_dir, clean_folder_name)
 
@@ -56,4 +67,9 @@ def main():
             download_single_song(selected_movie_url, song_name, desired_quality_string, output_dir)
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        # This block catches Ctrl+C
+        print("\n\nBye!!!")
+        sys.exit(0)
