@@ -1,75 +1,82 @@
-# main.py
-from prompts import prompt_language_choice, prompt_quality_choice, prompt_movie_selection, prompt_album_or_single_choice
-from search import search_movie_and_get_page_url
-from extract import get_song_list
-from download import download_zip_album, download_single_song
 import os
-import re
-import sys
 
-def main():
-    # Force UTF-8 encoding for Windows terminals to handle symbols like '▶'
-    if sys.platform.startswith('win'):
-        try:
-            sys.stdout.reconfigure(encoding='utf-8')
-        except AttributeError:
-            pass
+def prompt_language_choice():
+    # 1. Select Language
+    while True:
+        lang = input("Enter language (Tamil/Malayalam/Hindi/Telugu): ").strip().lower()
+        
+        # Define defaults based on OS and Language
+        home_dir = os.path.expanduser("~")
+        
+        if lang == 'tamil':
+            base_url = "https://www.masstamilan.dev"
+            default_path = os.path.join(home_dir, "Music", "Tamil")
+            break
+        elif lang == 'malayalam':
+            base_url = "https://mp3chetta.com"
+            default_path = os.path.join(home_dir, "Music", "Malayalam")
+            break
+        elif lang == 'hindi':
+            base_url = "https://mp3bhai.com"
+            default_path = os.path.join(home_dir, "Music", "Hindi")
+            break
+        elif lang == 'telugu':
+            base_url = "https://masstelugu.com"
+            default_path = os.path.join(home_dir, "Music", "Telugu")
+            break
+        else:
+            print("Invalid choice. Try again.")
 
-    language_choice, BASE_DOMAIN, download_base_dir = prompt_language_choice()
-    SEARCH_URL_PATTERN = f"{BASE_DOMAIN}/search?keyword="
+    # 2. Option to Change Output Folder
+    print(f"\nDefault output folder: {default_path}")
+    change_folder = input("Do you want to change this folder? (y/N): ").strip().lower()
 
-    movie_to_search = input("Enter the movie name to search for: ")
-    desired_quality_string = prompt_quality_choice()
-
-    potential_movies = search_movie_and_get_page_url(movie_to_search, BASE_DOMAIN, SEARCH_URL_PATTERN)
-    selected_movie_url, selected_movie_title = prompt_movie_selection(potential_movies, movie_to_search)
-
-    if not selected_movie_url:
-        print("Could not proceed without a selected movie page.")
-        return
-
-    # Sanitize inputs to ensure valid Windows folder names
-    default_folder_name = re.sub(r'[^\w\s-]', '', selected_movie_title or movie_to_search).strip().replace(' ', '_') or "Downloaded_Songs"
-    folder_name = input(f"Enter folder name for saving songs (default: {default_folder_name}): ").strip() or default_folder_name
-    
-    # Extra sanitization for the final folder path
-    clean_folder_name = re.sub(r'[^\w\s-]', '', folder_name).strip().replace(' ', '_')
-    output_dir = os.path.join(download_base_dir, clean_folder_name)
-
-    download_type = prompt_album_or_single_choice()
-
-    if download_type == 'a':
-        download_zip_album(selected_movie_url, desired_quality_string, output_dir, clean_folder_name)
-    else:
-        songs = get_song_list(selected_movie_url)
-        if not songs:
-            print("No songs found.")
-            return
-
-        print("\nAvailable songs on this album:")
-        for i, song in enumerate(songs):
-            print(f"{i+1}. {song['name']} (Singers: {song['singers']})")
-
+    if change_folder == 'y':
         while True:
-            selection_input = input(f"Enter song numbers to download (e.g. 1,3,5): ").strip()
+            new_path = input("Enter full path for downloads: ").strip()
+            # Remove surrounding quotes if user pasted path like "C:\Users\Name"
+            new_path = new_path.replace('"', '').replace("'", "")
+            
+            if new_path:
+                # Normalize path separators for Windows/Linux
+                final_path = os.path.normpath(new_path)
+                print(f"Output folder set to: {final_path}\n")
+                return lang, base_url, final_path
+            else:
+                print("Path cannot be empty.")
+    else:
+        print(f"Using default folder.\n")
+        return lang, base_url, default_path
+
+def prompt_quality_choice():
+    while True:
+        q = input("Enter desired quality (128 or 320): ").strip()
+        if q in ('128', '320'):
+            return f"{q}kbps"
+        print("Invalid input.")
+
+def prompt_movie_selection(matches, movie_name):
+    if not matches:
+        print(f"No results found for {movie_name}.")
+        return None, None
+    elif len(matches) == 1:
+        print(f"Found: {matches[0]['title']}")
+        return matches[0]['url'], matches[0]['title']
+    else:
+        for i, m in enumerate(matches):
+            print(f"{i+1}. {m['title']}")
+        while True:
             try:
-                indices = [int(x.strip()) - 1 for x in selection_input.split(',') if x.strip()]
-                if all(0 <= idx < len(songs) for idx in indices):
-                    break
-                else:
-                    print("One or more numbers out of range.")
+                choice = int(input("Choose movie number: "))
+                if 1 <= choice <= len(matches):
+                    return matches[choice-1]['url'], matches[choice-1]['title']
             except ValueError:
-                print("Invalid input. Please enter numbers separated by commas.")
+                pass
+            print("Invalid input.")
 
-        for idx in indices:
-            song_name = songs[idx]['name']
-            print(f"\n▶ Downloading: {song_name}")
-            download_single_song(selected_movie_url, song_name, desired_quality_string, output_dir)
-
-if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        # This block catches Ctrl+C
-        print("\n\nBye!!!")
-        sys.exit(0)
+def prompt_album_or_single_choice():
+    while True:
+        c = input("Download [A]lbum or [S]ingle song? ").strip().lower()
+        if c in ('a', 's'):
+            return c
+        print("Invalid input.")
